@@ -27,7 +27,7 @@ public static void myFunc(int num)
 위 예시의 int형 매개변수들은 중괄호 내부가 아니라도 지역변수의 성격을 지닌다.<br><br>
 
 
-### 06-3. 메소드의 재귀호출
+### 06-3. *메소드의 재귀호출*
 
 재귀적 메소드의 경우 메소드의 처음으로 돌아가는 것이 아니라 재귀 메소드 코드의 *복사본*이 실행된다고 이해하는 것이 재귀의 이해에 도움이 된다.
 
@@ -51,15 +51,15 @@ public static void myFunc(int num)
 
 - 기본형(primitive types) : 특정값을 직접 저장
 
-ex) int, long, double, boolean, char, short, byte, float
+    ex) int, long, double, boolean, char, short, byte, float
 
 - 레퍼런스형(reference types) : 특정 개체를 간접적으로 가리키는 변수(객체의 주소를 저장)
 
-ex) string, int[] ...
+    ex) string, int[] ...
 
- - 워드 : CPU가 한 번에 읽을 수 있는 데이터의 크기 (32bit, 64bit 컴퓨터)
+- 워드 : CPU가 한 번에 읽을 수 있는 데이터의 크기 (32bit, 64bit 컴퓨터)
 
-워드 안에 담길 수 있는 변수들이 기본형 변수, 그렇지 않은 것들이 참조형 변수<br><br>
+    워드 안에 담길 수 있는 변수들이 기본형 변수, 그렇지 않은 것들이 참조형 변수<br><br>
 
 cf) [String.format 문자열 포맷](http://library1008.tistory.com/5)
 
