@@ -97,7 +97,7 @@ CLASSNAME reference = new CLASSNAME();
 ***■  생성된 객체의 접근방법***
 
 ```java
-// 객체 내에 존재하는 변수의 접근
+// 객체 내에 존재하는 '변수'의 접근
 
 Fruitseller seller=newFruitSeller();
 seller.numOfApple=20;
@@ -108,10 +108,10 @@ seller라는 참조변수 안에 존재하는 numOfApple 에 20을 저장하라.
 */
 ```
 
-seller.numOfApple 의 . 은 객체의 접근에 사용되는 연산자
+seller.numOfApple 의 ' . ' 은 객체의 접근에 사용되는 연산자
 
 ```java
-// 객체 내에 존재하는 메소드의 접근(호출)
+// 객체 내에 존재하는 '메소드'의 접근(호출)
 
 FruitSeller seller = new FruitSeller();
 seller.saleApple(10);
@@ -123,15 +123,151 @@ seller가 참조하는 인스턴스 안에 존재하는 saleApple이라는 메�
 
 java 는 메모리에 직접적 접근이 불가능 (메모리 연산 불가능)
 
-C 는 메모리 연산 가능<br><br>
+C 는 메모리 연산 가능
 
+***■ 참조변수와 메소드의 관계***
+
+```java
+pubilc void myMethod()
+{
+    FruitSeller seller1 = new FruitSeller();
+    instMethod(seller1);
+    . . .
+}
+```
+
+```java
+pubilc void instMethod(FruitSeller seller2)
+{
+    ...
+}
+```
+
+myMethod라는 메소드 내에서 생성된 인스턴스를 myMethod 밖에 있는 instMethod와 같이 참조값(주소값)만 전달해주면 다른 메소드에서도 접근이 가능하다.
+<br><br>
+***※ 클래스 변수, 인스턴스 변수, 지역변수***
+
+```java
+public class test {
+
+    int iv; // 인스턴스 변수
+    static int cv; // 클래스 변수
+    
+    void method() {
+        int lv; // 지역 변수
+    }
+}
+```
+|변수의 종류|선언 위치|생성 시기(메모리 할당 시기)|
+|----------|----------|----------|
+|인스턴스 변수|클래스 영역|인스턴스가 생성될 때|
+|클래스 변수|클래스 영역|클래스가 메모리에 올라갈 때|
+|지역 변수|클래스 이외의 영역 (메소드, 생성자, 초기화 블럭)|변수 선언문이 수행 되었을 때|
+
+> 인스턴스 변수
+
+class 내부에 위치하며 **객체를 생성해야만 사용**할 수 있다. 인스턴스(객체)로 만들어지는 시점에 메모리에 할당되므로, 인스턴스로 만들어져야지만 실질적인 변수로써 의미를, 역할을 가지므로 인스턴스 변수라 칭한다.
+
+> 클래스 변수
+
+인스턴스 변수와 마찬가지로 class 내부에 위치한다. 인스턴스 변수 앞에 **static**을 붙여주면 클래스 변수가 된다. 인스턴스 변수는 각각 고유한 값을 가지지만 클래스 변수는 모든 인스턴스가 공통된 값을 공유하므로 한 클래스의 모든 인스턴스들이 공통적인 값을 가져야할 때 클래스 변수를 선언한다.
+
+클래스가 로딩될 때 생성되어( ***그러므로 메모리에 딱 한 번만 올라간다.*** ) 종료될 때 까지 유지되는 클래스 변수는 pubilc을 붙이면 같은 프로그램 내에서 어디서든 접근할 수 있는 **전역 변수**가 된다. 또한 인스턴스 변수의 접근법과 다르게 인스턴스를 생성하지 않고 클래스 이름, 클래스 변수명을 통해서 접근할 수 있다.
+
+> 지역 변수
+
+메소드 내에서 선언되며 메소드 내에서만 사용할 수 있는 변수이다. 메소드가 실행될 때 메모리를 할당받으며 메소드가 끝나면 소멸되어 사용할 수 없게 된다.
+
+<br><br>
+***■ 참조변수의 null 초기화***
+
+```java
+MyInst my = null    // MyInst라는 클래스의 참조변수 my의 선언
+
+if(my==null)
+    System.out.println("참조변수 my는 현재 참조하는 객체가 없습니다.");
+    
+// null은 아무것도 참조하지 않음을 의미하는 키워드
+```
+
+<br><br>
 ### *07-2. 생성자(Constructor)와 클래스 타입*
 
 > 생성자 
 ```java
 CLASSNAME reference = new CLASSNAME();
+
+// new CLASSNAME : CLASSNAME의 인스턴스 생성
+// CLASSNAME() : CLASSNAME() 생성자 호출
+
+// 해석 : CLASSNAME이라는 클래스의 인스터스를 생성하고, 그 과정에서 '인자값을 하나도 받지 않는' 생성자를 호출하겠다.
 ```
 
 개념 : 객체를 생성하는 특별한 메소드
 
-특징 : 리턴타입 명시가 없는 특별한 메소드 / 클래스 이름과 동일
+특징 : 리턴타입(반환형)이 선언되어 있지 않으면서, 반환하지 않는 메소드 / 클래스 이름과 동일
+<br><br>
+
+***■ 값을 전달받는 생성자***
+
+```java
+Number num = new Number(10);
+Number num = new Number(30);
+```
+ ↓
+        
+> 호출되는 생성자
+```java
+pubilc Number(int n)
+{
+    ...
+}
+```
+<br><br>
+***★ 생성자 내에서는 final 멤버 변수의 초기화가 가능하다.***
+<br><br>
+
+***■ 디폴트 생성자(Default Constructor)***
+
+생성자가 없어도 인스턴스 생성이 가능한 이유는 자동으로 삽입되는 디폴트 생성자에 있다.
+
+<br><br>
+### *07-3. 자바의 이름 규칙(Naming Rule)*
+
+***■ 클래스, 메소드, 상수의 이름 규칙***
+
+> 클래스 이름
+```java
+class MyClass
+class ProgrammingBook
+
+/*
+Camel Case
+    - 대문자로 시작
+    - 둘 이상의 단어가 묶여서 하나의 이름 구성 시, 새 단어는 대문자로 시작
+*/
+```
+
+> 인스턴스 변수, 메소드 이름
+```java
+int addYourMoney(int Money)
+int yourAge
+
+/*
+변형된 Camel Case
+    - 소문자로 시작
+    - 둘 이상의 단어가 묶여서 하나의 이름 구성 시, 새 단어는 소문자로 시작
+*/
+```
+
+> 상수 이름
+```java
+final int COLOR=7
+final int COLOR_RAINBOW=7
+
+/*
+변형된 Camel Case
+    - 전부 대문자로 표현
+    - 둘 이상의 단어가 묶여서 하나의 이름 구성 시, 두 단어 사이에 _ 
+*/
+```
