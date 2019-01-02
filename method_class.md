@@ -266,7 +266,6 @@ final int COLOR=7
 final int COLOR_RAINBOW=7
 
 /*
-변형된 Camel Case
     - 전부 대문자로 표현
     - 둘 이상의 단어가 묶여서 하나의 이름 구성 시, 두 단어 사이에 _ 
 */
