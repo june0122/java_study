@@ -185,7 +185,10 @@ class AgeInputException extends Exception
 
 <br><br>
 ### *18-3. 예외 클래스의 계층도*
-<br>
+<br><br>
+![예외 클래스 간의 상속 관계](https://s3.ap-northeast-2.amazonaws.com/opentutorials-user-file/module/516/2099.png)
+
+<br><br>
 표준 java class 메소드를 호출하기 위해선 API 문서를 참조하여 어떤 예외가 있는 지 확인해야 한다.
 
 <br><br>
