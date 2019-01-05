@@ -130,10 +130,146 @@ public static void main(String[] args)
 }
 ```
 
-
-
-
+<br><br>
 ### *23-2. 쓰레드의 특성*
+
+***■ 쓰레드의 스케줄링과 우선순위 컨트롤***
+
+> 쓰레드 스케줄링의 두 가지 기준
+
+- 우선순위가 높은 쓰레드의 실행을 우선시한다.
+
+- 우선순위가 동일할 때는 CPU의 할당시간을 나눈다.
+
+```java
+class MessageSendingThread extends Thread
+{
+    String message;
+    
+    public MessageSendingThread(String str)
+    {
+        message=str;
+    }
+    public void run()
+    {
+        for(int i=0; i<1000000; i++)
+            System.out.println(message+"("+getPriority()+")");
+    }
+}
+```
+
+```java
+public static void main(String[] args)
+{
+    MessageSendingThread tr1= new MessageSendingThread("First");
+    MessageSendingThread tr2= new MessageSendingThread("Second");
+    MessageSendingThread tr3= new MessageSendingThread("Third");
+    tr1.start();
+    tr2.start();
+    tr3.start();
+}
+```
+
+```java
+// 실행결과
+
+First(5)
+First(5)
+Second(5)
+......
+Third(5)
+First(5)
+......
+Third(5)
+```
+
+메소드 getPriority의 반환값을 통해서 쓰레드의 우선순위를 확인할 수 있다.
+
+위의 실행결과에서 보이듯이, 우선순위와 관련해서 별도의 지시를 하지 않으면, 동일한 우선순위의 쓰레드들이 생성된다.
+
+<br><br>
+***■ 우선순위가 다른 쓰레드들의 실행***
+
+```java
+class MessageSendingThread extends Thread
+{
+    String message;
+    public MessageSendingThread(String str)
+    {
+        message=str;
+        
+        // 우선순위 설정
+        setPriority(prio);
+    }
+    public void run()
+    {
+        for(int i=0; i<1000000; i++)
+            System.out.println(message+"("+getPriority()+")");
+    }
+}
+```
+
+```java
+public static void main(String[] args)
+{
+    MessageSendingThread tr1= new MessageSendingThread("First", Thread.MAX_PRIORITY);
+    MessageSendingThread tr2= new MessageSendingThread("Second", Thread.NORM_PRIORITY);
+    MessageSendingThread tr3= new MessageSendingThread("Third", Thread.MIN_PRIORITY);
+    tr1.start();
+    tr2.start();
+    tr3.start();
+}
+```
+
+```java
+// 실행결과
+
+First(10)
+First(10)
+......
+Second(5)
+Second(5)
+......
+Third(1)
+```
+
+**Thread.MAX_PRIORITY**는 상수로 10
+
+**Thread.NORM_PRIORITY**는 상수로 5
+
+**Thread.MIN_PRIORITY**는 상수로 1
+
+실행결과에서 보이듯 쓰레드의 실행시간은 우선순위의 비율대로 나뉘지 않는다.
+
+높은 우선순위의 쓰레드가 종료되어야 낮은 우선순위의 쓰레드가 실행된다.
+
+<br><br>
+***■ 쓰레드의 라이프 사이클***
+
+![Life Cycle of Thread](https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory&fname=http%3A%2F%2Fcfile23.uf.tistory.com%2Fimage%2F123BBA494F699E82126112)
+
+<br><br>
+
+|상태|설명|
+|---|---|
+|New|- 객체 생성<br>- 스레드가 만들어진 상태<br>- 아직 start() 메소드가 호출되지 않은 상태|
+|Runnable|- 실행 대기<br>- 실행 상태로 언제든지 갈 수 있는 상태<br> - 스레드 객체가 생선된 후에 start() 메서드를 호출하면 Runnable 상태로 이동|
+|Running|- 실행 상태<br>- Runnable 상태에서 스레드 스케줄러에 의해 Running 상태로 이동<br>- 스케줄러는 Running 상태의 스레드 중 하나를 선택해서 실행|
+|Blocked|- 일시 정지<br>- 사용하고자 하는 객체의 lock이 풀릴 때까지 기다리는 상태<br>- 스레드가 다른 특정한 이유로 Running 상태에서 Blocked 상태로 이동|
+|WAITING|- 일시 정지<br>- 다른 스레드가 통지할 때까지 기다리는 상태|
+|TIMED_WAITING|- 일시 정지<br>- 주어진 시간 동안 기다리는 상태|
+|TERMINATED(DEAD)|- 실행을 마친 상태(종료)<br>- run() 메소드 완료시 스레드가 종료되면 그 스레드는 다시 시작할 수 없게 된다.|
+
+<br>
+
+Runnable 상태의 쓰레드만이 스케줄러에 의해 스케줄링이 가능하다.
+
+그리고 앞서 보인 sleep, join 메소드의 호출로 인해서 쓰레드는 Blocked 상태가 된다.
+
+한 번 종료된 쓰레드는 다시 Runnable 상태가 될 수 없지만, Blocked 상태의 쓰레드는 조건이 성립되면 다시 Runnable 상태가 된다.
+
+
+
 
 ### *23-3. 동기화(Synchronization)*
 
