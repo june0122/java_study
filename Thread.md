@@ -268,9 +268,474 @@ Runnable 상태의 쓰레드만이 스케줄러에 의해 스케줄링이 가능
 
 한 번 종료된 쓰레드는 다시 Runnable 상태가 될 수 없지만, Blocked 상태의 쓰레드는 조건이 성립되면 다시 Runnable 상태가 된다.
 
-
-
+<br>
 
 ### *23-3. 동기화(Synchronization)*
 
+***■ 쓰레드의 메모리 접근방식과 그에 따른 문제점***
+
+
+
+
+***■ Thread-safe 한가?***
+
+`Note that this implementation is not synchronized`
+
+API 문서에는 해당 클래스의 인스턴스가 둘 이상의 쓰레드가 동시에 접근을 해도 문제가 발생하지 않는 지를 명시하고 있다.
+
+따라서 쓰레드 기반의 프로그래밍을 한다면, 특정 클래스의 사용에 앞서 쓰레드에 안전한 지를 확인해야 한다.
+
+<br><br>
+***■ 쓰레드의 동기화 기법 1 : synchronize 기반 동기화 메소드***
+
+
+<br><br>
+***■ synchronized 기반 동기화 메소드의 정확한 이해***
+
+
+<br><br>
+***■ 쓰레드의 동기화 기법 1 : synchronize 기반 동기화 블록***
+
+> 동기화 메소드 기반
+
+```java
+public synchronized int add(int n1, int n2)
+{
+    opCnt++;    // 동기화가 필요한 문장
+    return n1+n2;
+}
+
+public synchronized int min(int n1, int n2)
+{
+    opCnt++;    // 동기화가 필요한 문장
+    return n1-n2;
+}
+```
+
+> 동기화 블록 기반
+
+```java
+public int add(int n1, int n2)
+{
+    synchronized(this)
+    {
+        opCnt++;    // 동기화 된 문장
+    }
+    return n1+n2;
+}
+
+public int min(int n1, int n2)
+{
+    synchronized(this)
+    {
+        opCnt++;    // 동기화 된 문장
+    }
+    return n1-n2;
+}
+```
+
+동기화 블록을 이용하면 동기화의 대상이 되는 영역을 세밀하게 제한할 수 있다.
+
+synchronized(this)에서 this는 동기화의 대상을 알리는 용도로 사용이 되었다. 즉, 메소드가 호출된 인스턴스 자신의 열쇠를 대상으로 동기화를 진행하는 문장이다.
+
+<br><br>
+***■ 동기화 블록의 예***
+
+```java
+public void addOneNum1()
+{
+    synchronized(key1)
+    {
+        num1+=1;
+    }
+}
+
+public void addTwoNum1()
+{
+    synchronized(key1)
+    {
+        num1+=2;
+    }
+}
+
+public void addOneNum2()
+{
+    synchronized(key2)
+    {
+    num2+=1;
+    }
+}
+
+public void addTwoNum2()
+{
+    synchronized(key2)
+    {
+        num2+=2;
+    }
+}
+
+. . . . .
+
+Object key1=new Object();
+Object key2=new Object();
+
+```
+
+```java
+// 보다 일반적인 형태
+// 위의 예제와 달리 둘 다 key를 지정하는 것이 아닌, 두 개의 동기화 인스턴스 중 하나는 this로 지정
+
+class IHaveTwoNum
+{
+    . . . . .
+    public void addOneNum1()
+    {
+        synchronized(this) { num1+=1; }
+    }
+    
+    public void addTwoNum1()
+    {
+        synchronized(this) { num1+=2; }
+    }
+    
+    public void addOneNum2()
+    {
+        synchronized(key) { num2+=1; }
+    }
+    
+    public void addTwoNum2()
+    {
+        synchronized(key) { num2+=2; }
+    }
+    
+    . . . . .
+    
+    Object key=new Object();
+}
+```
+
+<br><br>
+***■ 쓰레드 접근순서의 동기화 필요성***
+
+> 수정 전 
+
+```java
+class NewWriter extends Thread
+{
+    NewsPaper paper;
+    public NewsWriter(NewsPaper paper)
+    {
+        this.paper=paper;
+    }
+    public void run()
+    {
+        paper.setTodayNews("자바의 열기가 뜨겁습니다.");
+    }
+}
+
+class NewsReader extends Thread
+{
+    NewsPaper paper;
+    public NewReader(NewsPaper paper)
+    {
+        this.paper=paper;
+    }
+    public void run()
+    {
+        System.out.println("오늘의 뉴스 : "+paper.getTodayNews())
+    }
+}
+```
+
+```java
+class NewsPaper
+{
+    String todayNews;
+    public void setTodayNews(String news)
+    {
+        todayNews=news;
+    }
+    public String getTodayNews()
+    {
+        return todayNews;
+    }
+}
+```
+
+```java
+public static void main(String[] args)
+{
+    NewsPaper paper=new NewsPaper();
+    NewsReader reader=new NewsReader(paper);
+    NewsWriter writer=new NewsWriter(paper);
+    
+    reader.start();
+    writer.start();
+    
+    try
+    {
+        reader.join();
+        writer.join();
+    }
+    
+    catch(InterruptedException e)
+    {
+        e.printStackTrace();
+    }
+}
+```
+
+> 수정 후
+
+```java
+class NewsPaper
+{
+    String todayNews;
+    boolean isTodayNews=false;
+    
+    public void setTodayNews(String news)
+    {
+        todayNews=news;
+        isTodayNews=ture;
+        synchronizde(this)
+        {
+            notifyAll();
+        }
+    }
+    
+    public String getTodayNews()
+    {
+        if(isTodayNews==false)
+        {
+            try
+            {
+                synchronizde(this)
+                {
+                    wait();
+                }
+            }
+            
+            catch(InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        
+        return todayNews;
+    }
+}
+
+/*
+wait와 notifyAll 메소드에 의한 동기화가 진행될  때, 이전 예제에서 달라지는 부분은 쓰레드 클래스가 아닌
+쓰레드에 의해 접근이 이뤄지는 NewsPaper 클래스라는 사실에 주목.
+*/
+```
+
+
+<br><br>
+***■ wait, notify, notifyAll에 의한 실행순서 동기화***
+
+- public final void wait() throws InterruptedException
+
+위의 함수를 호출한 쓰레드는 notify 또는 notifyAll 메소드가 호출될 때까지 블로킹 상태에 놓이게 된다.
+
+- public final void notify()
+
+wait 함수의 호출을 통해서 블로킹 상태에 놓여있는 쓰레드 하나를 깨운다.
+
+- public final void notifyAll()
+
+wait 함수의 호출을 통해서 블로킹 상태에 놓여있는 모든 쓰레드를 깨운다.
+
+<br>
+
+```java
+synchronized(this)
+{
+    wait();
+}
+
+// 위의 함수들은 왼쪽에서 보이는 바와 같이 한 순간에 하나의 쓰레드만 호출할 수 있도록 동기화 처리를 해야 한다.
+```
+
+<br><br>
 ### *23-4. 새로운 동기화 방식*
+
+***■ synchronized 키워드의 대체***
+
+ReentrantLock 인스턴스를 이용한 동기화 기법
+
+Java Ver 5.0 이후로 제공된 동기화 방식이다. lock 메소드와 unlock 메소드의 호출을 통해서 동기화 블록을 구성한다.
+
+```java
+class MyClass
+{
+    private final ReentrantLock criticObj=new ReentrantLock();
+    . . . . .
+    void myMethod(int arg)
+    {
+        criticObj.lock();   // 다른 쓰레드가 진입하지 못하게 문을 잠근다.
+        . . . . .
+        . . . . .
+        criticObj.unlock(); // 다른 쓰레드가 진입이 가능하게 문을 연다
+    }
+}
+```
+
+<br>
+↓ 보다 안정적인 구현모델을 위해서는 반드시 unlock 메소드가 호출되도록 모델을 설계한다.
+
+
+
+```java
+void myMethod(int arg)
+{
+    criticObj.lock();   // 다른 쓰레드가 진입하지 못하게 문을 잠근다.
+    try
+    {
+        . . . . .
+        . . . . .
+    }
+    finally
+    {
+        criticObj.unlock(); // 다른 쓰레드의 진입이 가능하게 문을 연다.
+    }
+}
+```
+
+<br><br>
+***■ await, signal, signalAll에 의한 실행순서의 동기화***
+
+- await : 낮잠을 취한다(wait 메소드에 대응)
+
+- signal : 낮잠 자는 쓰레드 하나를 깨운다(notify 메소드에 대응)
+
+- signalAll : 낮잠 자는 모든 쓰레드를 깨운다(notifyAll 메소드에 대응)
+
+<br>
+
+ReentrantLock 인스턴스 대상으로 newCondition 메소드 호출 시, Condition 인터페이스를 구현하는 인스턴스의 참조 값 반환
+
+이 인스턴스를 대상으로 위의 메소드를 호출하여, 쓰레드의 실행순서를 동기화 한다.
+
+
+```java
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Condition;
+import java.util.Scanner;
+
+class StringComm
+{
+	String newString;
+	boolean isNewString=false;
+	
+	private final ReentrantLock entLock=new ReentrantLock();
+	private final Condition readCond=entLock.newCondition();
+	private final Condition writeCond=entLock.newCondition();
+	
+	public void setNewString(String news)
+	{
+		entLock.lock();
+		try
+		{
+			if(isNewString==true)
+				writeCond.await();
+				
+			newString=news;
+			isNewString=true;
+			readCond.signal();
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			entLock.unlock();
+		}
+	}
+	
+	public String getNewString()
+	{
+		String retStr=null;
+		
+		entLock.lock();
+		try
+		{
+			if(isNewString==false)
+				readCond.await();
+			
+			retStr=newString;
+			isNewString=false;		
+			writeCond.signal();
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}		
+		finally
+		{
+			entLock.unlock();
+		}
+			
+		return retStr;
+	}
+}
+
+class StringReader extends Thread
+{
+	StringComm comm;
+	
+	public StringReader(StringComm comm)
+	{
+		this.comm=comm;
+	}
+	public void run()
+	{
+		Scanner keyboard=new Scanner(System.in);
+		String readStr;
+		
+		for(int i=0; i<5; i++)
+		{
+			readStr=keyboard.nextLine();
+			comm.setNewString(readStr);
+		}
+	}
+}
+
+class StringWriter extends Thread
+{
+	StringComm comm;
+	
+	public StringWriter(StringComm comm)
+	{
+		this.comm=comm;
+	}
+	public void run()
+	{
+		for(int i=0; i<5; i++)
+			System.out.println("read string: "+comm.getNewString());
+	}
+}
+
+class ConditionSyncStringReadWrite
+{
+	public static void main(String[] args)
+	{
+		StringComm strComm=new StringComm();
+		StringReader sr=new StringReader(strComm);
+		StringWriter sw=new StringWriter(strComm);
+	
+		System.out.println("자바의 새로운 동기화...");
+		sr.start();
+		sw.start();
+	}
+}
+```
+
+
+
+
+
+
+
