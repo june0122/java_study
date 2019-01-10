@@ -341,6 +341,8 @@ public static void main(String[] args){
 }
 ```
 
+<br>
+
 > while문을 이용한 반복자 생성
 
 ```java
