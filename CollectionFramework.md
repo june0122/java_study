@@ -363,3 +363,81 @@ Iterator<String> itr = list.iterator();   // '반복자' 획득, itr이 지팡�
 for(Iterator<Integer> itr = list.iterator(); itr.hasNext(); ) {
     n = itr.next();
 ```
+
+<br>
+
+### 리스트만 갖는 양방향 반복자
+
+- 처음부터 다시 시작하고 싶을 땐 (단방향) 반복자를 다시 생성하면 된다.
+
+- 단방향 반복자로 충분히 해결이 되는데 양방향 반복자를 사용하면 코드가 불필요하게 복잡해진다.
+
+- 리스트 자료구조들만 양방향 반복자를 지원한다는 단점을 가지고 있다.
+
+<br>
+
+`public ListIterator listIterator()  //  List<E> 인터페이스의 메소드`
+  
+  - ListIterator<E>는 Iterator<E>을 상속한다.
+  
+<br>
+
+E next()              : 다음 인스턴스의 참조 값을 반환
+
+boolean hasNext()     : next 메소드 호출 시 참조 값 반환 가능 여부 확인
+
+void remove()         : next 메소드 호출을 통해 반환했던 인스턴스를 삭제
+
+<br>
+
+E previous()          : next 메소드와 기능은 같고 방향만 반대
+
+boolean hasPrevious() : hasNext 메소드와 기능은 같고 방향만 반대
+
+<br>
+
+void add(E e)         : 인스턴스의 추가
+
+void set(E e)         : 인스턴스의 변경
+
+<br>
+
+### 양방향 반복자의 예
+
+```java
+public static void main(String[] args) {
+        List<String> list = Arrays.asList("Toy", "Box", "Robot", "Box");
+        list = new ArrayList<>(list);
+       
+        ListIterator<String> litr = list.listIterator();  // 양방향 반복자 획득
+        
+        String str; 
+        while(litr.hasNext()) {     // 왼쪽에서 오른쪽으로 이동을 위한 반복문
+            str = litr.next();
+            System.out.print(str + '\t');
+
+            if(str.equals("Toy"))   // "Toy" 만나면 "Toy2" 저장
+                litr.add("Toy2");
+        }
+        System.out.println();
+
+        while(litr.hasPrevious()) {   // 오른쪽에서 왼쪽으로 이동을 위하 반복문
+            str = litr.previous();
+            System.out.print(str + '\t');
+            if(str.equals("Robot"))     // "Robot" 만나면 "Robot2" 저장
+                litr.add("Robot2");
+        }
+        System.out.println();
+
+        for(Iterator<String> itr = list.iterator(); itr.hasNext(); )
+            System.out.print(itr.next() + '\t');
+        System.out.println();
+    }
+```
+
+```java
+// 출력 결과
+Toy   Box     Robot    Box
+Box   Robot   Robot2   Box      Toy2    Toy
+Toy   Toy2    Box      Robot2   Robot   Box
+```
