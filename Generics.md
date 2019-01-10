@@ -41,6 +41,8 @@ class FruitBox
 
 > AppleBox, OrangeBox의 **장점인 자료형의 안전성**과 FruitBox의 장점인 **구현의 편의성**을 한데 모은 것이 `제네릭`이다.
 
+`자바의 제네릭과 C++의 템플릿(Template)이 연관된다.`
+
 <br>
 
 ### 자료형의 안전성에 대한 논의
