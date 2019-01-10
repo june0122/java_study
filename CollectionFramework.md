@@ -357,7 +357,7 @@ Iterator<String> itr = list.iterator();   // '반복자' 획득, itr이 지팡�
 
 > for문을 이용한 반복자 생성
 
-  - for-each문을 구성하면 for-each문이 그대로 실행되는 것이 아닌, 아래와 같이 내부적으론 반복자 기반의 반복문으로 바뀐다.
+  - for-each문을 구성하면 for-each문이 그대로 실행되는 것이 아닌, 아래와 같이 내부적으론 **반복자 기반의 반복문**으로 바뀐다.
 
 ```java
 for(Iterator<Integer> itr = list.iterator(); itr.hasNext(); ) {
