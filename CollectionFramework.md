@@ -169,6 +169,8 @@ public static void main(String[] args) {
 - for-each문의 대상이 되기 위한 조건 
 
   - Iterable<T> 인터페이스의 구현
+  
+   - `for(String s : list)`의 list의 위치에 오는 인스턴스의 클래스가 Iterable 인터페이스를 구현하고 있는가(Iterator 메소드 호출이 가능한가) 확인해야 한다.
 
 <br>
 
@@ -193,7 +195,7 @@ public static void main(String[] args){
   Iterator<String> itr = list.iterator();   // '반복자' 획득, itr이 지팡이를 참조한다.
   . . . .
   // 반복자를 이용한 순차적 참조
-  While(itr.hasNext()) {  // next 메소드가 반환할 대상이 있다면,
+  hile(itr.hasNext()) {  // next 메소드가 반환할 대상이 있다면,
     str = itr.next();     //next 메소드를 호출한다.
     . . . .
   }
@@ -329,9 +331,33 @@ public static void main(String[] args){
   
   int n;
   for(Iterator<Integer> itr = list.iterator(); itr.hasNext(); ) {
-    n = itr,next();   // *오토 언박싱* 진행
+    n = itr.next();   // 우측에 인스턴스 값이 왔으므로 *오토 언박싱* 진행
+                      // next 메소드를 호출하면 integer형 인스턴스의 참조 값이 반환
+                      // 대입 연산자의 왼편엔 int형 변수가 왔으므로 오른편엔 int형 값이 와야한다. → 오토 언박싱
+    
     System.out.print(n + "\t");
     }
     System.out.println();
 }
+```
+
+> while문을 이용한 반복자 생성
+
+```java
+. . . .
+Iterator<String> itr = list.iterator();   // '반복자' 획득, itr이 지팡이를 참조한다.
+. . . .
+  while(itr.hasNext()) {  // next 메소드가 반환할 대상이 있다면,
+    str = itr.next();     //next 메소드를 호출한다.
+```
+
+<br>
+
+> for문을 이용한 반복자 생성
+
+  - for-each문을 구성하면 for-each문이 그대로 실행되는 것이 아닌, 아래와 같이 내부적으론 반복자 기반의 반복문으로 바뀐다.
+
+```java
+for(Iterator<Integer> itr = list.iterator(); itr.hasNext(); ) {
+    n = itr.next();
 ```
