@@ -213,6 +213,47 @@ interface Printable {
 
 > if(ca instanceof Cake) . . .
 
+- Cake는 클래스의 이름도, 인터페이스의 이름도 될 수 있다.
+
+- ca가 참조하는 인스턴스를 Cake형 참조변수로 참조할 수 있으면 true 반환
+
+- ca가 참조하는 인스턴스가 Cake를 직접 혹은 간접적으로 구현한 클래스의 인스턴스인 경우 true 반환
+
+```java
+interface Printable {
+    void printLine(String str);
+}
+
+class SimplePrinter implements Printable { 
+    public void printLine(String str) {
+        System.out.println(str);
+    }
+}
+
+class MultiPrinter extends SimplePrinter {
+    public void printLine(String str) {
+        super.printLine("start of multi...");        
+        super.printLine(str);
+        super.printLine("end of multi");
+    }
+}
+
+class InstanceofInterface {
+    public static void main(String[] args) {
+        Printable prn1 = new SimplePrinter();
+        Printable prn2 = new MultiPrinter();
+        
+        if(prn1 instanceof Printable)
+            prn1.printLine("This is a simple printer.");
+
+        System.out.println();
+
+        if(prn2 instanceof Printable)
+            prn2.printLine("This is a multiful printer.");
+    }
+}
+```
+
 <br>
 
 ### 인터페이스의 또 다른 용도: Marker 인터페이스 (체크 용도)
