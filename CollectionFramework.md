@@ -441,3 +441,189 @@ Toy   Box     Robot    Box
 Box   Robot   Robot2   Box      Toy2    Toy
 Toy   Toy2    Box      Robot2   Robot   Box
 ```
+
+<br>
+
+## 3. Set 인터페이스를 구현하는 컬렉션 클래스들
+
+### Set<E>을 구현하는 클래스의 특성과 HashSet<E> 클래스
+
+> Set<E> 인터페이스를 구현하는 제네릭 클래스들은 다음 두 가지 특성을 갖는다.
+  
+  - 저장 순서가 유지되지 않는다.
+  
+  - 데이터의 중복 저장을 허용하지 않는다.
+
+<br>
+
+```java
+public static void main(String[] args) {
+  Set<String> set = new HashSet<>();
+  set.add("Toy");
+  set.add("Box");
+  set.add("Robot");
+  set.add("Box");
+  System.out.println("인스턴스 수: " + set.siz());
+  
+  // 반복자를 이용한 전체 출력
+  for(Iterator<String> itr = set.iterator(); itr.hasNext(); )
+    System.out.prnt(itr.next() + '\t');
+  System.out.println();
+  
+  // for-each문을 이용한 전체 출력
+  for(String s : set)
+    System.out.print(s + '\t');
+  System.out.printn();
+} 
+```
+
+<br>
+
+> 출력 결과
+
+```
+인스턴스 수 : 3
+Box   Robot   Toy
+Box   Robot   Toy
+```
+
+***동일(중복) 인스턴스의 기준은? → HashSet과 관련된 중요한 내용***
+
+<br>
+
+### 동일 인스턴스에 대한 기준은?
+
+> public boolean **equals**(Object obj)
+
+  - Object 클래스의 equals 메소드 호출 결과를 근거로 동일 인스턴스를 판단한다.
+  
+> public int **hashCode**()
+  
+  - 그런데 그에 앞서 Object 클래스의 hashCode 메소드 호출 결과가 같아야 한다.
+  
+<br>
+
+> **정리하면**
+
+  - 두 인스턴스가 hasCode 메소드 호출 결과로 반환하는 값이 동일해야 한다.
+  
+  - 그리고 이어서 두 인스턴스를 대상으로 equals 메소드의 호출 결과 true가 반환되면 동일 인스턴스로 간주한다.
+  
+<br>
+
+### 해쉬 알고리즘의 이해 ~~(분류 기법 알고리즘)~~
+
+- 분류 대상 : `3`, `5`, `7`, `12`, `25`, `31`
+
+- 적용 해쉬 알고리즘 : `num % 3`
+
+- 분류 결과 :
+  
+  - 연산결과 0 : `3`, `12`
+  
+  - 연산결과 1 : `7`, `25`, `31`
+  
+  - 연산결과 2 : `5`
+  
+- 해쉬 알고리즘을 이용해 `8`을 탐색하면 나머지값이 2인 집합하고만 비교하면 되므로 속도가 매우 빠르다.
+
+<br>
+
+> 이렇듯 분류를 해놓으면 탐색의 속도가 매우 빨라진다. 즉, 존재 유무 확인이 매우 빠르다.<br>Object 클래스의 hashCode 메소드는 이렇듯 인스턴스들을 분류하는 역할을 한다.
+
+<br>
+
+### hashCode 메소드의 다양한 정의의 예
+
+```java
+class Car {
+  private String model;
+  private String color;
+  . . . .
+  
+  @Override
+  public int hashCode() {
+    return (model.hashCode() + color.hashCode()) / 2;
+    // 모든 인스턴스 변수의 정보를 다 반영하여 해쉬 값을 얻으려는 노력이 깃든 문장.
+    // 결과적으로 더 세밀하게 나뉘고, 따라서 그만큼 탐색 속도가 높아진다.
+  }
+  . . . .
+}
+```
+
+<br>
+
+### 해쉬 알고리즘 일일이 정의하기 조금 그렇다면...
+
+> public static int hash(Object...values)
+
+  - `java.util.Objects`에 정의된 메소드, 전달된 인자 기반의 해쉬 값 반환
+  
+```java
+@Override
+public int hashCode() {
+  return Objects.hash(model, color);  // 전달인자 model, color 기반 해쉬 값 반환
+}         // 전달된 인자를 모두 반영한 해쉬 값을 반환한다.
+```
+
+* * *
+
+### TreeSet<E> 클래스의 이해와 활용
+
+> Set<E> 인터페이스를 구현하는 TreeSet<E> 클래스
+  
+  - 트리(Tree) 자료구조를 기반으로 인스턴스를 저장, 이는 **정렬 상태가 유지되면서 인스턴스가 저장됨**을 의미
+
+<br>
+
+```java
+public static void main(String[] args) {
+  TreeSet<Integer> tree = new TreeSet<Integer>();
+  tree.add(3);
+  tree.add(1);
+  tree.add(2);
+  tree.add(4);  
+  System.out.println("인스턴스 수: " + tree.siz());
+  
+  // 반복자를 이용한 전체 출력
+  // 반복자의 인스턴스 참조 순서는 오름차순을 기준으로 한다는 특징이 있다.
+  for(Iterator<Integer> itr = tree.iterator(); itr.hasNext(); )
+    System.out.prnt(itr.next().toString() + '\t');
+  System.out.println();
+  
+  // for-each문을 이용한 전체 출력
+  for(Integer n : tree)
+    System.out.print(n.toString() + '\t');
+  System.out.printn();
+} 
+```
+
+<br>
+
+> 출력 결과
+
+```
+인스턴스 수 : 4
+1    2    3     4
+1    2    3     4
+```
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
