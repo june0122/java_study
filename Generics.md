@@ -129,11 +129,11 @@ class FruitBox<T>
 
 ### 제네릭 클래스 기반 인스턴스 생성
 
-FruitBox<Orange> orBox=new FruitBox<Orange>();
+`FruitBox<Orange> orBox=new FruitBox<Orange>();`
 
 > T를 Orange로 결정해서 FruitBox의 인스턴스를 생성하고 이를 참조할 수 있는 참조변수를 선언해서 참조값을 저장한다.
 
-FruitBox<Apple> apBox=new FruitBox<Apple>();
+`FruitBox<Apple> apBox=new FruitBox<Apple>();`
 
 > T를 Apple로 결정해서 FruitBox의 인스턴스를 생성하고 이를 참조할 수 있는 참조변수를 선언해서 참조값을 저장한다.
 
@@ -188,7 +188,7 @@ class InstanceTypeShower
 	}
 ```
 
-> shower.showInstType(aaa); → shower.<AAA>showInstType(aaa);
+> `shower.showInstType(aaa); → shower.<AAA>showInstType(aaa);`
   
   - aaa가 AAA의 참조변수이므로 위와 같이 표현
   
@@ -224,7 +224,7 @@ class InstanceTypeShower2
 
 ### 매개변수의 자료형 제한
 
-> public static<T extends AAA> void myMethod(T param) { · · · · }
+> `public static<T extends AAA> void myMethod(T param) { · · · · }`
 
 - 키워드 extends는 매개변수의 자료형을 제한하는 용도로도 사용된다.
 
@@ -280,30 +280,30 @@ public static <T> void showArrayData(T[] arr)
 
 ### 제네릭 변수의 참조와 상속의 관계
 
-public void ohMethod(FruitBox<Fruit> param) { . . . . }
+`public void ohMethod(FruitBox<Fruit> param) { . . . . }`
 
 - ohMethod의 인자로 전달될 수 있는 참조 값의 자료형은
 
-  - FruitBox<Fruit>의 인스턴스 참조 값
+  - `FruitBox<Fruit>`의 인스턴스 참조 값
 
-  - FruitBox<Fruit>를 상속하는 인스턴스의 참조 값
+  - `FruitBox<Fruit>`를 상속하는 인스턴스의 참조 값
     
 <br>
 
 ### 와일드카드와 제네릭 변수의 선언
 
-> <? extends Fruit>
+> `<? extends Fruit>`
 
-- <? extends Fruit>가 의미하는 바는 "Fruit을 상속하는 모든 클래스"이다.
+- <? extends Fruit>`가 의미하는 바는 "Fruit을 상속하는 모든 클래스"이다.
 
-  - FruitBox<> extends Fruit> box1 = new FruitBox<Fruit>();
+  - `FruitBox<> extends Fruit> box1 = new FruitBox<Fruit>();`
   
-  - FruitBox<> extends Fruit> box2 = new FruitBox<Fruit>();
+  - `FruitBox<> extends Fruit> box2 = new FruitBox<Fruit>();`
   
  ```
- FruitBox<Fruit> 인스턴스의 참조 값도,
+ `FruitBox<Fruit>` 인스턴스의 참조 값도,
  
- FruitBox<Apple> 인스턴스의 참조 값도
+ `FruitBox<Apple>` 인스턴스의 참조 값도
  
  인자로 전달받을 수 있는 매개변수의 선언에는 와일드카드 문자 `?` 가 사용된다.
  ```
