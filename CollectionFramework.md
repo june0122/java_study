@@ -20,9 +20,9 @@
 
 ## 2. List 인터페이스를 구현하는 컬렉션 클래스들
 
-### List<E> 인터페이스
+### `List<E>` 인터페이스
 
-> List<E> 인터페이스를 구현하는 대표적인 컬렉션 클래스
+> `List<E>` 인터페이스를 구현하는 대표적인 컬렉션 클래스
 
 - `ArrayList<E>` : **배열 기반** 자료구조, 배열을 이용하여 인스턴스 저장
   
@@ -32,7 +32,7 @@
 
 <br>
 
-> List<E> 인터페이스를 구현하는 대표적인 컬렉션 클래스들의 공통 특성
+> `List<E>` 인터페이스를 구현하는 대표적인 컬렉션 클래스들의 공통 특성
 
 - 인스턴스의 **`★ 저장` 순서 유지** → 나란히 줄을 세우는 것
 
@@ -40,7 +40,7 @@
 
 <br>
 
-### ArrayList<E> 클래스
+### `ArrayList<E>` 클래스
 
 ```java
 public static void main(String[] args){
@@ -72,7 +72,7 @@ public static void main(String[] args){
 ```
 <br>
 
-### LinkedList<E> 클래스
+### `LinkedList<E>` 클래스
 
 - 위의 ArrayList 예제 코드에서 ArrayList를 LinkedList로만 수정해주면 된다.
 
@@ -110,7 +110,7 @@ public static void main(String[] args){
 
 <br>
 
-### ArrayList<E> vs LinkedList<E>
+### `ArrayList<E>` vs `LinkedList<E>`
 
 <br>
 
@@ -126,21 +126,21 @@ public static void main(String[] args){
 
 <br>
 
-- ArrayList<E>의 단점
+- `ArrayList<E>`의 단점
 
   - 저장 공간을 늘리는 과정에서 시간이 많이 소요된다.
   
   - 인스턴스의 삭제 과정에서 매우 많은 연산이 필요할 수 있다. 따라서 느릴 수 있다.
   
-- ArrayList<E>의 장점
+- `ArrayList<E>`의 장점
   
   - 저장된 인스턴스의 참조가 빠르다.
 
-- LinkedList<E>의 단점
+- `LinkedList<E>`의 단점
 
   - 저장된 인스턴스의 참조 과정이 베열에 비해 복잡하다. 따라서 많이 느릴 수 있다.
   
-- LinkedList<E>의 장점
+- `LinkedList<E>`의 장점
 
   - 저장 공간을 늘리는 과정이 간단하다.
   
@@ -174,7 +174,7 @@ public static void main(String[] args) {
 
 <br>
 
-> Public interface **Collection<E>** extends **Iterable<E>**
+> `Public interface Collection<E> extends Iterable<E>`
 
 - 콜렉션 인터페이스는 Set, List, Queue와 같은 대다수의 컬렉션 인터페이스가 상속하는 부모 인터페이스이다.
 
@@ -236,7 +236,7 @@ while(itr.hasNext()) {
 
 ### 배열보다는 컬렉션 인스턴스가 좋다 : 컬렉션 변환
 
-- 다음 두 가지 이유로 배열보다 ArrayList<E>가 더 좋다.
+- 다음 두 가지 이유로 배열보다 `ArrayList<E>`가 더 좋다.
 
   - 인스턴스의 저장과 삭제가 편하다.
 
@@ -262,7 +262,7 @@ while(itr.hasNext()) {
 
 > public ArrayList(Collection`<? extends E>` c) {. . .}
 
-  - Collection<E>를 구현한 컬렉션 인스턴스를 인자로 전달받는다.
+  - `Collection<E>`를 구현한 컬렉션 인스턴스를 인자로 전달받는다.
   
   - 그리고 E는 인스턴스 생성 과정에서 결정되므로 무엇이든 될 수 있다.
   
@@ -293,13 +293,13 @@ public static void main(String[] args) {
 
 ### 배열 기반 리스트를 연결 기반 리스트로..
 
-> public ArrayList(Collection<? extends E> c)   // ArrayList<E> 생성자 중 하나
+> public ArrayList(Collection<? extends E> c)   // `ArrayList<E>` 생성자 중 하나
 
-  - 인자로 전달된 컬렉션 인스턴스로부터 ArrayList<E> 인스턴스 생성
+  - 인자로 전달된 컬렉션 인스턴스로부터 `ArrayList<E>` 인스턴스 생성
 
-> public LinkedList(Collection<? extends E> c)  // LinkedList<E> 생성자 중 하나
+> public LinkedList(Collection<? extends E> c)  // `LinkedList<E>` 생성자 중 하나
 
-  - 인자로 전달된 인스턴스로부터 LinkedList<E> 인스턴스 생성
+  - 인자로 전달된 인스턴스로부터 `LinkedList<E>` 인스턴스 생성
 
 <br>
 
@@ -378,7 +378,7 @@ for(Iterator<Integer> itr = list.iterator(); itr.hasNext(); ) {
 
 `public ListIterator listIterator()  //  List<E> 인터페이스의 메소드`
   
-  - ListIterator<E>는 Iterator<E>을 상속한다.
+  - `ListIterator<E>`는 `Iterator<E>`을 상속한다.
   
 <br>
 
@@ -446,9 +446,9 @@ Toy   Toy2    Box      Robot2   Robot   Box
 
 ## 3. Set 인터페이스를 구현하는 컬렉션 클래스들
 
-### Set<E>을 구현하는 클래스의 특성과 HashSet<E> 클래스
+### `Set<E>`을 구현하는 클래스의 특성과 `HashSet<E>` 클래스
 
-> Set<E> 인터페이스를 구현하는 제네릭 클래스들은 다음 두 가지 특성을 갖는다.
+> `Set<E>` 인터페이스를 구현하는 제네릭 클래스들은 다음 두 가지 특성을 갖는다.
   
   - 저장 순서가 유지되지 않는다.
   
@@ -566,11 +566,15 @@ public int hashCode() {
 }         // 전달된 인자를 모두 반영한 해쉬 값을 반환한다.
 ```
 
+<br>
+
 * * *
 
-### TreeSet<E> 클래스의 이해와 활용
+<br>
 
-> Set<E> 인터페이스를 구현하는 TreeSet<E> 클래스
+### `TreeSet<E>` 클래스의 이해와 활용
+
+> `Set<E>` 인터페이스를 구현하는 `TreeSet<E>` 클래스
   
   - 트리(Tree) 자료구조를 기반으로 인스턴스를 저장, 이는 **정렬 상태가 유지되면서 인스턴스가 저장됨**을 의미
 
@@ -587,6 +591,7 @@ public static void main(String[] args) {
   
   // 반복자를 이용한 전체 출력
   // 반복자의 인스턴스 참조 순서는 오름차순을 기준으로 한다는 특징이 있다.
+  // Comparable 인터페이스의 구현을 통해서 두 인스턴스의 크고 작음에 대한 기준을 제공.
   for(Iterator<Integer> itr = tree.iterator(); itr.hasNext(); )
     System.out.prnt(itr.next().toString() + '\t');
   System.out.println();
@@ -608,22 +613,449 @@ public static void main(String[] args) {
 1    2    3     4
 ```
 
+<br>
+
+### `TreeSet<E>` 클래스의 오름차순 출력이란?
+  
+> Ch.20의 Arrays 클래스의 sort 메소드 언급하며 설명한 내용
+
+```
+interface Comparable
+  
+  → int compareTo(Object o)
+  
+인자로 전달된 o가 작다면 양의 정수 반환
+
+인자로 전달된 o가 크다면 음의 정수 반환
+
+인자로 전달된 o와 같다면 0을 반환
+```
+
+<br>
+
+> 제네릭 등장 이후로 추가된 인터페이스
+
+```
+interface Comparable<T>
+
+  → int compareTo(T o)
+  
+인자로 전달된 o가 작다면 양의 정수 반환
+
+인자로 전달된 o가 크다면 음의 정수 반환
+
+인자로 전달된 o와 같다면 0을 반환
+```
+
+<br>
+
+### TreeSet 인스턴스에 저장될 것을 고려한 클래스의 예
+
+```java
+class Person implements Comparable<Person> {
+  private String name;
+  private int age;
+  . . .
+  @Override
+  // Comparable<T> 인터페이스의 구현 결과를 근거로 저장이 이뤄지고 또 참조가 진행된다.
+  public int compareTo(Person p) {
+    return this.age - p.age;
+  }  
+}
+```
+
+***따라서 TreeSet<T>에 저장할 인스턴스(클래스)들은 모두 Comparable<T> 인터페이스를 구현한 클래스의 인터페이스여야 한다.<br>아니면 예외가 발생!***
+
+<br>
+
+### `Comparator<T>` 인터페이스 기반으로 `TreeSet<E>`의 새로운 정렬 기준 제시하기
+  
+> `public interface Comparator<T>`
+  
+  - `int compare(T o1, T o2)` 의 구현을 통해 정렬 기준을 결정할 수 있다.
+  
+    - o1이 o2보다 크면 양의 정수 반환
+    
+    - o1이 o2보다 작으면 음의 정수 반환
+    
+    - o1과 o2가 같다면 0 반환
+    
+  <br>
+  
+  위 인터페이스를 구현한 클래스의 인스턴스를 `TreeSet<E>`의 다음 생성자를 통해 전달
+  
+    - public TreeSet(Comparator<? super E> comparator)
+    
+  <br>
+  
+### `Comparator<T>` 인터페이스 기반 `TreeSet<E>`의 예 ①
+  
+  > Person 클래스에 TreeSet을 위한 정렬 기준이 '이미' 마련되어 있으나<br>Comparator 구현 인스턴스를 전달하여 새로운 기준을 제공한다.
+  
+  ```java
+  class Person implements Comparable<Person> {
+    String name;
+    int age;
+    . . .
+
+    @Override
+    public int compareTo(Person p) {
+        return this.age - p.age;
+        // 'age(나이)'를 기준으로 사전편찬 순으로 정렬되어 있음
+    }
+}
+
+class PersonComparator implements Comparator<Person> {
+    public int compare(Person p1, Person p2) {
+        return p2.age - p1.age;
+        // ① 기존 p1은 p2보다 작다. 그런 p2에서 p1을 빼면 양의 정수를 반환한다.
+        // ② 즉 p1이 p2보다 크다는 것이므로 새로운 정렬 기준으로 내림차순이 제시되었다.
+    }
+}
+
+class ComparatorPerson {
+    public static void main(String[] args) {
+        TreeSet<Person> tree = new TreeSet<>(new PersonComparator());
+        tree.add(new Person("YOON", 37));
+        tree.add(new Person("HONG", 53));
+        tree.add(new Person("PARK", 22));
+	
+        for(Person p : tree)
+            System.out.println(p);
+    }
+}
+```
+
+<br>
+
+### `Comparator<T>` 인터페이스 기반 `TreeSet<E>`의 예 ②
+
+> String 클래스의 정렬 기준은 사전 편찬순이다. 아래는 이를 길이 순으로 새로운 정렬 기준을 적용한 예시이다.
+
+```java
+class StringComparator implements Comparator<String> {
+    public int compare(String s1, String s2) {
+        return s1.length() - s2.length();
+    }
+}
+
+class ComparatorString {
+    public static void main(String[] args) {
+        TreeSet<String> tree = new TreeSet<>(new StringComparator()); // 정렬 기준을 바꾸는 문장
+        tree.add("Box");    
+        tree.add("Rabbit");
+        tree.add("Robot");
+	
+        for(String s : tree)
+            System.out.print(s.toString() + '\t');
+
+        System.out.println();
+    }
+}
+```
+
+<br>
+
+```
+// 출력결과
+
+Box   Robot   Rabbit
+```
+
+<br>
+
+### 중복된 인스턴스의 삭제
+
+```java
+class ConvertCollection {
+    public static void main(String[] args) {
+        List<String> lst = Arrays.asList("Box", "Toy", "Box", "Toy");   // 리스트는 중복을 허용
+        ArrayList<String> list = new ArrayList<>(lst);
+        
+        for(String s : list)
+            System.out.print(s.toString() + '\t');
+        System.out.println();
+
+        HashSet<String> set = new HashSet<>(list);    // 중복을 허용하지 않는 Set → 중복이 삭제됨
+        list = new ArrayList<>(set);    // 저장물을 다시 list 인스턴스로 옮긴다.
+
+        for(String s : list)
+            System.out.print(s.toString() + '\t');
+        System.out.println();
+    }
+}
+```
+
+<br>
+
+```
+// 출력 결과
+
+Box   Toy   Box   Toy
+Box   Toy
+```
+
+<br>
+
+## 4. `Queue<E>` 인터페이스를 구현하는 컬렉션 클래스들
+
+### 스택과 큐의 이해
+
+![스택과 큐의 구조](https://cdn-images-1.medium.com/max/1138/1*w2zgPM-PJoRWFWJG2GrSaQ.png)
+
+> Stack
+
+  - LIFO(last-in-first-out) : 먼저 저장된 데이터가 마지막에 빠져나간다.
+
+> Queue
+
+  - FIFO(first-in-first-out) : 먼저 저장된 데이터가 먼저 빠져나간다.
+
+<br>
+
+### 큐 인터페이스
+
+> `Queue<E>` 인터페이스의 메소드들
+
+```
+  boolean add(E e)    넣기
+  
+  E remove()          꺼내기
+  
+  E element()         확인하기
+  
+  // 예외 발생
+  
+  
+  boolean offer(E e)  넣기, 넣을 공간이 부족하면 false 반환
+  
+  E poll()            꺼내기, 꺼낼 대상 없으면 null 반환
+  
+  E peek()            확인하기, 확인할 대상이 없으면 null 반환
+  
+  // 예외 발생 
+```
+
+<br>
+
+### 큐(Queue)의 구현
+
+> `LinkedList<E>`는 `List<E>`와 동시에 `Queue<E>`를 구현하는 컬렉션 클래스이다.<br>따라서 어떠한 타입의 참조변수로 참조하느냐에 따라 **리스트**로도 **큐**로도 동작한다.
+
+```java
+ public static void main(String[] args) {
+        Queue<String> que = new LinkedList<>(); // LinkedList<E> 인스턴스 생성
+        que.offer("Box");
+        que.offer("Toy");
+        que.offer("Robot");
+
+        // 무엇이 다음에 나올지 확인 
+        System.out.println("next: " + que.peek());
+
+        // 첫 번째, 두 번째 인스턴스 꺼내기
+        System.out.println(que.poll());
+        System.out.println(que.poll());
+        
+        // 무엇이 다음에 나올지 확인
+        System.out.println("next: " + que.peek());
+
+        // 마지막 인스턴스 꺼내기
+        System.out.println(que.poll());
+    }
+```
+
+<br>
+
+```
+// 출력결과
+
+next: Box
+Box
+Toy
+next: Robot
+Robot
+```
+
+<br>
+
+### 스택(Stack)의 구현
+
+- Deque을 기준으로 스택을 구현하는 것이 자바에서의 원칙
+
+- Deque 인터페이스를 구현한 콜렉션 클래스의 인스턴스를 생성하고<br>해당 인스턴스를 대상으로 offerFirst 메소드와 pollFisrt 메소드를 이용해서 넣고 꺼내기만 하는 것이 **Stack**이다.
+
+> `Deque<E>` 인터페이스의 메소드들
+
+```
+ · 앞으로 넣고, 꺼내고, 확인하기
+ 
+   boolean offerFirst(E e)  넣기, 공간 부족하면 false 반환
+   E pollFirst()            꺼내기, 꺼낼 대상 없으면 null 반환
+   E peekFirst()            확인하기, 확인할 대상 없으면 null 반환
+
+
+ · 뒤로 넣고, 꺼내고, 확인하기
+ 
+   boolean offerLast(E e)   넣기, 공간 부족하면 false 반환
+   E pollLast()             꺼내기, 꺼낼 대상 없으면 null 반환
+   E peekLast()             확인하기, 확인할 대상 없으면 null 반환
+   
+   // 예외 발생 안함
+```
+
+```
+ · 앞으로 넣고, 꺼내고, 확인하기
+ 
+   void addFisrt(E e)     넣기
+   E removeFisrt()        꺼내기
+   E getFirst()           확인하기
+   
+
+ · 뒤로 넣고, 꺼내고, 확인하기
+ 
+   void addLast(E e)      넣기
+   E removeLast()         꺼내기
+   E getLast()            확인하기
+   
+   // 예외 발생
+```
+
+<br>
+
+### 스택(Stack)의 예
+
+```java
+public static void main(String[] args) {
+        Deque<String> deq = new ArrayDeque<>();   // → 배열 기반 Deque
+        
+        // └  Deaue<String> deq = new LinkedList<>(); 로도 구성 가능  → LinkedList 기반 Deque
+
+        // 앞으로 넣고       
+        deq.offerFirst("1.Box");
+        deq.offerFirst("2.Toy");
+        deq.offerFirst("3.Robot");
+
+        // 앞에서 꺼내기
+        System.out.println(deq.pollFirst());
+        System.out.println(deq.pollFirst());
+        System.out.println(deq.pollFirst());  
+    }
+```
+<br>
+
+> `LinkedList<E>`가 구현하는 인터페이스들
+  
+  - `Deque<E>`, `List<E>`, `Queue<E>`
+  
+    - `LinkedList<E>` 인스턴스가 누구를 참조하느냐에 따라 동작하는 방식이 다르다.
+
+<br>
+
+## 5. `Map<K, V>` 인터페이스를 구현하는 컬렉션 클래스들
+
+### Key-Value 방식의 데이터 저장과 `HashMap<K, V>` 클래스
+
+```java
+public static void main(String[] args) {
+        HashMap<Integer, String> map = new HashMap<>();
+        
+        // Key-Value 기반 데이터 저장
+        map.put(45, "Brown");
+        map.put(37, "James");
+        map.put(23, "Martin");
+
+
+        // 데이터 탐색
+        System.out.println("23번: " + map.get(23));
+        System.out.println("37번: " + map.get(37));
+        System.out.println("45번: " + map.get(45));
+        System.out.println();
+
+        // 데이터 삭제
+        map.remove(37);
+
+        // 데이터 삭제 확인
+        System.out.println("37번: " + map.get(37));
+    }
+```
+
+```
+// 출력결과
+
+23번: Martin
+37번: James
+45번: Brown
+
+37번: null
+```
+
+<br>
+
+### `HashMap<K, V>`의 순차적 접근 방법
+
+- HashMap<K, V> 클래스는 Iterable<T> 인터페이스를 구현하지 않으니<br>for-each문을 통해서, 혹은 **반복자**를 얻어서 순차적 접근을 진행할 수 없다.
+
+- 대신 다음 메소드 호출을 통해서 Key를 따로 모아 놓은 컬렉션 인스턴스를 얻을 수 있다.<br>그리고 이때 반환된 컬렉션 인스턴스를 대상으로 반복자를 얻을 수 있다.
+
+  - public `Set<K>` keySet()
+
+<br>
+
+> Map은 반복자가 어울리지 않는 자료구조?
+
+```
+Map이라는 자료 구조는 그 자체만으로 반복자를 제공하는 것이 어울리지 않는다.
+
+Map의 순차적 접근을 원할때 Key값을 List와 Set 중, 어느 컬렉션 인스턴스에 담는 것이 좋을까?
+
+Key는 중복되지 않는 집합을 성격을 가지고 있다. 고로 중복을 허용하는 List보다는 중복을 허용하지 않는 Set이 더 어울린다.
+
+Set을 구현한 Collection 인스턴스는 Collection이 Iterable 인터페이스를 상속하므로 반복자를 얻어올 수 있다.
+```
+
+<br>
+
+### HashMap<K, V>의 순차적 접근의 예
+
+```java
+public static void main(String[] args) {
+        HashMap<Integer, String> map = new HashMap<>();
+        
+        // Key-Value
+        map.put(45, "Brown");
+        map.put(37, "James");
+        map.put(23, "Martin");
+
+        // Key만 담고 있는 컬렉션 인스턴스 생성
+        Set<Integer> ks = map.keySet();
+
+        // 전체 Key 출력 (for-each문 기반)
+        for(Integer n : ks)
+            System.out.print(n.toString() + '\t');
+        System.out.println();
+
+        // 전체 Value 출력 (for-each문 기반)
+        for(Integer n : ks)
+            System.out.print(map.get(n).toString() + '\t');
+        System.out.println();
+
+        // 전체 Value 출력 (반복자 기반)
+        for(Iterator<Integer> itr = ks.iterator(); itr.hasNext(); )
+            System.out.print(map.get(itr.next()) + '\t');
+        System.out.println();
+    }
+```
+
+<br>
+
+### TreeMap<K, V>의 순차적 접근의 예
+
+```java
+
+```
 
 
 
 
 
 
-
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
