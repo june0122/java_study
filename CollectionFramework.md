@@ -1046,6 +1046,7 @@ public static void main(String[] args) {
     }
 ```
 
+```
 // 출력결과
 
 37	23	45
