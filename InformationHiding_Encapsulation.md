@@ -32,6 +32,7 @@ class FruitSalesMain4
 }
 ```
 
+
 <br>
 
 ### 정보은닉, 인스턴스 변수의 private
