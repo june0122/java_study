@@ -3,7 +3,7 @@
 |이름|정의|
 |:--:|:--:|
 |Comparable|클래스의 기본 정렬 기준을 설정하는 인터페이스|
-|Comparator|기본 정렬 기준과는 다르게 정렬하고 싶을 때 이용하는 클래스|
+|Comparator|기본 정렬 기준 외에 다른 기준으로 정렬하고 싶을 때 이용하는 인터페이스|
 
 ## Comparable과 Comparator란?
 
@@ -29,12 +29,12 @@
 <img width = '600' src = 'https://user-images.githubusercontent.com/39554623/115342437-3bee7c80-a1e5-11eb-845a-419fed6c4e12.png'>
 </p>
 
-### 2. Comparator 클래스
+### 2. Comparator 인터페이스
 
-- 정의 : 정렬 가능한 클래스 <sup>Comparable이 구현된 클래스</sup>들의 **기본 정렬 기준과는 다른 방식으로 정렬하고 싶을 때 사용하는 클래스**
+- 정의 : 정렬 가능한 클래스 <sup>Comparable이 구현된 클래스</sup>들의 **기본 정렬 기준과는 다른 방식으로 정렬하고 싶을 때 사용하는 인터페이스**
 - 사용법 : Comparator 클래스를 생성하여, 내부에 `compare()` 메서드를 원하는 정렬 기준대로 구현하여 사용할 수 있다.
 - 패키지 : `java.util.Comparator`
-- 주로 익명 클래스 `new Comparator() { ... }`로 사용되며, 기본적으로 오름차순이 정렬 기준인 것을 내림차순으로 정렬하는 등의 용도로 사용된다.
+- 주로 익명 객체 `new Comparator() { ... }`로 사용되며, 기본적으로 오름차순이 정렬 기준인 것을 내림차순으로 정렬하는 등의 용도로 사용된다.
 
 ## 사용 방법
 
@@ -163,7 +163,7 @@ class Main{
 
 Comparable을 이용해 학번 오름차순대로 정렬을 하였다. 이제 이 5명의 학생들 중에 성적우수자 2명을 선정하여 장학금을 지급하려 한다. 이 때, 성적이 같은 학생이 여러 명이라면 학번이 빠른 순서대로 정하려고 한다. 우리는 성적이 높은 학생 2명을 편하게 찾기 위해서 학생들을 **"성적이 높은 순으로 정렬한 뒤, 앞에서 2명을 선택"**하려고 한다. 어떻게 할 수 있을까?
 
-성적이 높은 순서대로 정렬하는 것이 우선이다. 그런데 Student클래스의 기본 정렬 기준은 "학번 오름차순"이므로 이 **기본 정렬 기준과 다른 새로운 정렬 기준**을 세워야 한다. 이 때 이용되는 것이 바로 **Comparator**이다. **Comparator는 `java.util.Comparator`패키지**에 있고, **주로 익명 클래스로 사용**되며, 이를 **`Arrays.sort()`내부에 정렬 기준으로 구현**하면 된다.
+성적이 높은 순서대로 정렬하는 것이 우선이다. 그런데 Student클래스의 기본 정렬 기준은 "학번 오름차순"이므로 이 **기본 정렬 기준과 다른 새로운 정렬 기준**을 세워야 한다. 이 때 이용되는 것이 바로 **Comparator**이다. **Comparator는 `java.util.Comparator`패키지**에 있고, **주로 익명 객체로 사용**되며, 이를 **`Arrays.sort()`내부에 정렬 기준으로 구현**하면 된다.
 
 > Array.sort() 내부에 Comparator를 구현할 수 있도록 정의되어 있다.
 <p align = 'center'>
@@ -289,7 +289,108 @@ class Main{
 
 여기까지 해서 Comparable과 Comparator에 대해 알아보았다. 상당히 자주 사용되는 개념들이므로 스스로 다양하게 사용해보면서 익히는 것이 중요하다.
 
-※ 연습
+## 사용 방법 비교
+
+### Comparator 객체 사용
+
+`Comparator` 인터페이스의 구현체를 `Arrays.sort()`나 `Collections.sort()`와 같은 정렬 메서드의 추가 인자로 넘기면 정렬 기준을 누락된 클래스의 객체나 기존 정렬 기준을 무시하고 새로운 정렬 기준으로 객체를 정렬할 수 있다.
+
+```java
+Comparator<Student> comparator = new Comparator<Student>() {
+    @Override
+    public int compare(Student s1, Student s2) {
+        double s1Score = s1.score;
+        double s2Score = s2.score;
+        if (s1.score == s2.score) {
+            return Double.compare(s1.id, s2.id);
+        }
+        return Double.compare(s2Score, s1Score);
+    }
+};
+
+Arrays.sort(student, comparator);
+```
+
+위 코드는 `Comparator` 객체를 `Collections.sort()` 메서드의 두번째 인자로 넘겨서 이전 섹션과 동일한 정렬 결과를 만들어 내고 있습니다. 이렇게 Comparator 객체를 인자로 넘기면, 정렬 대상 객체가 `Comparable` 인터페이스를 구현 여부와 상관없이, 넘어온 `Comparator` 구현체의 `compare()` 메서드 기준으로 정렬을 수행합니다. `compare()` 메서드는 비교 대상 2 개의 객체를 인자를 차례로 인자로 받습니다. 첫번째 인자가 두번째 인자보다 작다면 음수, 같다면 0, 크다면 양수를 리턴하면 됩니다.
+
+### Comparator 익명 객체 사용
+
+```java
+Arrays.sort(student, new Comparator<Student>() {
+    @Override
+    public int compare(Student s1, Student s2) {
+        double s1Score = s1.score;
+        double s2Score = s2.score;
+        if (s1.score == s2.score) {
+            return Double.compare(s1.id, s2.id);
+        }
+        return Double.compare(s2Score, s1Score);
+    }
+});
+```
+
+### 람다 함수로 대체
+
+`Comparator` 객체는 메서드가 하나 뿐인 함수형 인터페이스를 구현하기 때문에 **람다 함수로 대체가 가능**합니다.
+
+```java
+Arrays.sort(student, (s1, s2) -> {
+    double s1Score = s1.score;
+    double s2Score = s2.score;
+    if (s1.score == s2.score) {
+        return Double.compare(s1.id, s2.id);
+    }
+    return Double.compare(s2Score, s1Score);
+});
+```
+
+### Stream으로 정렬
+
+`Stream` 클래스의 `sorted()` 메서드도 `Comparator` 객체를 인자로 받아 정렬을 해줍니다. 스트림을 사용하면 위에서 살펴본 배열과 리스트의 정렬과 달리 기존 객체의 순서를 변경하지 않고, 새롭게 정렬된 객체를 생성하고자 할 때 사용됩니다.
+
+> Stream + Comparator 객체
+
+```java
+Comparator<Student> comparator = new Comparator<Student>() {
+    @Override
+    public int compare(Student s1, Student s2) {
+        double s1Score = s1.score;
+        double s2Score = s2.score;
+        if (s1.score == s2.score) {
+            return Double.compare(s1.id, s2.id);
+        }
+        return Double.compare(s2Score, s1Score);
+    }
+
+List<Student> list = Arrays.stream(student)
+        .sorted(comparator)
+        .collect(Collectors.toList());
+
+for (Student value : list) {
+    System.out.println(value);
+}
+```
+
+> Stream + 람다 표현식 
+
+```java
+List<Student> list = Arrays.stream(student)
+        .sorted((s1, s2) -> {
+            double s1Score = s1.score;
+            double s2Score = s2.score;
+            if (s1.score == s2.score) {
+                return Double.compare(s1.id, s2.id);
+            }
+            return Double.compare(s2Score, s1Score);
+        })
+        .collect(Collectors.toList());
+
+for (Student value : list) {
+    System.out.println(value);
+}
+```
+
+※ 추가 연습
 
 Comparator를 이용해 학생들을 이름의 오름차순(=사전 순)으로 정렬하는 코드
 
@@ -363,6 +464,8 @@ class Main {
 ## References
 
 - https://blog.naver.com/occidere/220918234464
+- https://cwondev.tistory.com/15
+- https://www.daleseo.com/java-comparable-comparator/
 - https://gmlwjd9405.github.io/2018/09/06/java-comparable-and-comparator.html
 
 ---
