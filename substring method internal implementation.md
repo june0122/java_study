@@ -39,63 +39,7 @@ sb.append("Java").append(" String");
 |:--|:--|:--|:--|
 |불변성|O|X|X|
 |쓰레드 안전(Thread safe)|O|X|O|
-|동기화(synchronized)|O|O|X|
-
-### Thread safety 확인하기
-
-#### String
-
-```java
-public class ImmutableTest01 extends Thread {
-    String value;
-
-    public ImmutableTest01(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public void run() {
-        value += " safety";
-        System.out.println(value);
-    }
-
-    public static void main(String[] args) {
-        String str = "Thread";
-        new ImmutableTest01(str).start();
-        new ImmutableTest01(str).start();
-    }
-}
-```
-
-```console
-Thread safety
-Thread safety
-```
-
-### StringBuilder, StringBuffer
-
-```java
-// StringBuilder를 
-public class ImmutableTest02 extends Thread {
-    StringBuilder value;
-
-    public ImmutableTest02(StringBuilder value) {
-        this.value = value;
-    }
-
-    @Override
-    public void run() {
-        value.append(" safety");
-        System.out.println(value);
-    }
-
-    public static void main(String[] args) {
-        StringBuilder sb = new StringBuilder("Thread");
-        new ImmutableTest02(sb).start();
-        new ImmutableTest02(sb).start();
-    }
-}
-```
+|동기화(synchronized)|O|X|O|
 
 ```console
 Thread safety
