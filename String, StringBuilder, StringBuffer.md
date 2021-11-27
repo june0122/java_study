@@ -1,4 +1,4 @@
-# [Java] 문자열 더하기 연산의 내부 구현 - String, StringBuilder, StringBuffer
+# String, StringBuilder, StringBuffer
 
 Java를 공부하다보면 String은 불변<small>(immutable)</small> 객체라는 이야기를 많이 듣게 된다.
 
