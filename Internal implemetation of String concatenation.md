@@ -76,13 +76,35 @@ public class StringConcat {
 
 #### 먼저 main 메서드를 확인해보자
 
+```java
+0: ldc           #2                  // String Hello
+2: astore_1
+3: ldc           #3                  // String World
+5: astore_2
+```
 - 0번 라인에서 상수 "Hello"를 `ldc` 명령어를 통해 오퍼랜드 스택으로 푸시한 다음, 2번 라인에서 `astore_<n>` 명령어를 통해 오퍼랜드 스택 맨 위의 레퍼런스를 지역 변수 `s1`에 저장한다.
   - <b>오퍼랜드 스택<small>(operand stack)</small></b>은 메서드 내 계산을 위한 작업 공간이다.
   - <b>[ldc](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc)</b>는 run-time constant pool의 constant<small>(상수)</small>를 오퍼랜드 스택으로 푸시하는 명령어이다.
   - <b>[astore_&lt;n&gt;](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.astore_n)</b>은 오퍼랜드 스택의 맨 위에 있는 *objectref*가 팝되고 현재 프레임의 지역 변수 배열에서 인덱스 n의 지역 변수 값이 *objectref*로 설정된다.
   - 이러한 작업은 3번과 5번 라인에서 지역 변수 `s2`에 "World"가 할당되는 것으로 반복된다.
-- 6번 라인에서 `StringBuilder` 객체를 생성한 다음 13번 라인에서 `aload_<n>` 명령어를 통해 지역 변수 `s1`에서 "Hello"에 대한 레퍼런스를 불러온다. 
+
+```java
+6: new           #4                  // class java/lang/StringBuilder
+...
+13: aload_1
+```
+- 6번 라인에서 `StringBuilder` 객체를 생성한 다음 13번 라인에서 `aload_<n>` 명령어를 통해 지역 변수 `s1`에서 "Hello"에 대한 레퍼런스를 불러온다.
+
+```java
+14: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+```
 - 14번 라인에서 `invokevirtual`을 통해 `append()` 메서드를 호출하여 "Hello"를 `StringBuilder` 객체에 추가한다.
+
+```java
+17: aload_2
+18: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+21: invokevirtual #7                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+```
 - 17, 18번 라인에서도 `s2`에서 "World"에 대한 레퍼런스를 불러온 뒤 `append()` 메서드를 통해 `StringBuilder` 객체에 추가한다.
 - 21번 라인에서 `StringBuilder`의 `toString()` 메서드가 호출되는 것을 확인할 수 있다.
 
