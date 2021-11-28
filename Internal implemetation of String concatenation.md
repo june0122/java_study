@@ -230,6 +230,14 @@ String : 1.859sec
 StringBuilder : 0.005sec
 ```
 
+## 정리
+
+자바의 문자열 연결 연산에서 흔히 String, StringBuilder, StringBuffer 세 개의 클래스를 비교하게 되는데, **StringBuffer**는 쓰레드 안정성을 위한 `append()` 메서드의 동기화<small>(synchronization)</small>때문에 연산 횟수가 적을 경우 정말 좋지 않은 성능을 보여준다. 그러므로 프로그램이 동기화를 필요로 하는 경우가 아니라면 **StringBuilder**를 사용하는 것이 항상 최고의 성능을 제공한다.
+
+하지만 코드를 작성할 때 성능을 고려하는 것도 중요하지만 편의성과 가독성 또한 고려해야하는 중요한 요소이다. 문자열 연결 연산자 `+`가 편리하고 가독성이 좋다고 느낀다면 문자열 연결 연산이 1000회 미만으로 적게 반복되는 상황에서는 `StringBuilder.append`와 거의 유사하기 때문에 충분히 사용할 수 있다.
+
+물론 본문에서 확인해봤듯이 Java 9부터는 `+`의 내부 구현이 변경되어 이전보다 빠른 성능을 보여주기는 하지만, 1만회 이상만 반복해도 StringBuilder를 사용하는 것보다 1초 이상 느린 성능을 보여주기 때문에 대부분의 문자열 연산에서 StringBuilder를 사용하는 것이 좋다. 
+
 ## References
 
 - https://johngrib.github.io/wiki/jvm-stack/
