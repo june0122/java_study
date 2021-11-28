@@ -36,7 +36,7 @@ sb.append("Java").append(" String");
 
 StringBuilder와 StringBuffer 클래스의 중요한 차이점은 바로 <b>동기화<small>(synchronization)</small></b>의 유무이다. StringBuilder는 동기화를 지원하지 않기에 Thread safe하지 않은 반면, StringBuffer는 동기화를 지원하기에 Thread safe한 특성을 지니고 있다. 결과적으로 동기화를 고려하지 않는 StringBuilder가 StringBuffer보다 싱글 쓰레드 환경에서 더 빠른 속도를 보여주게 된다.
 
-String, StringBuilder, StringBuffer 클래스의 성능 차이는 [javapapers 블로그](https://javapapers.com/java/java-string-vs-stringbuilder-vs-stringbuffer-concatenation-performance-micro-benchmark/)와 아래 이미지에 잘 정리되어 있으니 참고하자. <small>([String.concat과 String 클래스의 문자열 연결 연산 + 의 차이점](https://stackoverflow.com/questions/47605))</small>
+String, StringBuilder, StringBuffer 클래스의 성능 차이는 [javapapers 블로그](https://javapapers.com/java/java-string-vs-stringbuilder-vs-stringbuffer-concatenation-performance-micro-benchmark/)와 아래 이미지에 잘 정리되어 있으니 참고하자. 해당 블로그에 따로 언급은 하지 않았지만 JDK 7 환경에서 벤치마크를 진행한 것으로 보여진다. <small>([String.concat과 String 클래스의 문자열 연결 연산 + 의 차이점](https://stackoverflow.com/questions/47605))</small>
 
 <p align = 'center'>
 <img width = '900' src = 'https://user-images.githubusercontent.com/39554623/143666690-3c63f017-0c35-4596-985a-2d618b4a7300.png'>
