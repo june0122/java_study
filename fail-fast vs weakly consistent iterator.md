@@ -231,9 +231,9 @@ public void clearWithIterator(String category) {
 
 ### fail-safe는 자바에서 사용되지 않는 용어?!
 
-fail-fast iterators의 반대 개념으로 많은 글들이 fail-safe iterators라는 용어를 사용하지만 정작 자바 공식 문서에는 iterator를 설명하는데 fail-safe라는 용어를 사용하지는 않는다. 대신 `java.util.concurrent` 패키지에 대한 javadoc을 보면 <b>weakly consistent<small>(약한 일관성)</small></b>이라는 용어를 사용한다.
+fail-fast iterators의 반대 개념으로 많은 글들이 fail-safe iterators라는 용어를 사용하지만 정작 자바 공식 문서에는 iterator를 설명하는데 fail-safe라는 용어를 사용하지는 않는다. 대신 `java.util.concurrent` 패키지에 대한 [javadoc](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/concurrent/package-summary.html)을 보면 <b>weakly consistent<small>(약하게 일관된)</small></b>이라는 용어를 사용한다.
 
-> Most concurrent Collection implementations (including most Queues) also differ from the usual java.util conventions in that their Iterators and Spliterators provide weakly consistent rather than fast-fail traversal.
+> Most concurrent Collection implementations (including most Queues) also differ from the usual java.util conventions in that their Iterators and Spliterators provide weakly consistent rather than fast-fail [traversal](https://stackoverflow.com/questions/16327461/what-is-the-difference-between-iteration-and-traversing).
 
 weakly consistent와 fail-safe 용어의 오용에 대한 글은 stackoverflow의 글들을 참고해보자.
 
