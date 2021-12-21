@@ -239,6 +239,7 @@ weakly consistent와 fail-safe 용어의 오용에 대한 글은 stackoverflow�
 
 - https://stackoverflow.com/a/38341921/12364882
 - https://stackoverflow.com/a/17377698/12364882
+- https://stackoverflow.com/a/20142664/12364882
 
 그럼 weakly consistent를 제공하는 iterator를 가진 대표적인 클래스인 ConcurrentHashMap을 살펴보도록 하자.
 
@@ -311,10 +312,10 @@ final V replaceNode(Object key, V value, Object cv) {
 
 ## 정리
 
-fail-fast iterator는 동작 중 오류가 발생하면 바로 ConcurrentModificationException을 발생시키고 작업을 중단한다.
+fail-fast iterator는 iterator가 생성된 후 구조가 변경되면 바로 ConcurrentModificationException을 던지고 작업을 중단한다.
 - 예시 : HashMap, LinkedHashMap, ArrayList, Vector
 
-weakly consistent iterator는 동작 중 오류가 발생해도 작업을 중단하지 않고 끝까지 진행한다.
+weakly consistent iterator는 iterator가 생성된 후 구조가 변경되어도 ConcurrentModificationException을 던지지 않고 끝까지 작업을 진행한다.
 - 예시 : ConcurrentHashMap, CopyOnWriteArrayList
 
 ## References
