@@ -246,8 +246,6 @@ weakly consistent와 fail-safe 용어의 오용에 대한 글은 stackoverflow�
 
 우선 weakly consistent와 fail safe는 **둘 다 `ConcurrentModificationException`을 던지지 않는다는 공통점**을 가지고 있다. 이로인해 둘이 같은 개념이라는 혼동을 불러일으키는 것 같다.
 
-- `weakly consistent iterator` : CAS<small>(compare-and-swap)</small>에 의존하는 컬렉션에는 weakly consistent iterator가 있으며, 이 iterator는 생성된 이후 [Backing Collection](https://stackoverflow.com/questions/10636528)에 적용된 변경 사항을 모두는 아니지만 일부를 반영한다. 예를 들어, iterator가 도달하기 전에 컬렉션의 요소가 수정되거나 제거된 경우 이러한 변경 사항은 확실히 반영하지만, 삽입에 대한 보장은 없다.
-
 - `fail safe iterator` 메커니즘은 컬렉션 내부 자료구조의 **복사본**을 만들고 이를 사용하여 요소들 위를 iterate한다. 이렇게 하면 기본 자료구조가 변경되는 경우 ConcurrentModificationException가 던져지는 것을 방지할 수 있다. 물론 전체 배열을 복사하는 오버헤드가 존재한다.
   - CopyOnWriteArrayList가 fail safe iterator를 사용한 구현 중 하나이며 생성자 코드를 보면 쉽게 확인할 수 있다.
 
@@ -265,7 +263,11 @@ weakly consistent와 fail-safe 용어의 오용에 대한 글은 stackoverflow�
     }
     ```
 
-그럼 weakly consistent를 제공하는 iterator를 가진 대표적인 클래스인 ConcurrentHashMap을 살펴보도록 하자.
+- `weakly consistent iterator` : [Compare and Swap](http://tutorials.jenkov.com/java-concurrency/compare-and-swap.html)에 의존하는 컬렉션에는 weakly consistent iterator가 있으며, 이 iterator는 생성된 이후 [Backing Collection](https://stackoverflow.com/questions/10636528)에 적용된 변경 사항을 모두는 아니지만 일부를 반영한다. 예를 들어, iterator가 도달하기 전에 컬렉션의 요소가 수정되거나 제거된 경우 이러한 변경 사항은 확실히 반영하지만, 삽입에 대한 보장은 없다.
+
+키워드를 정리하자면 fail-safe는 copy를 이용한 매커니즘이고 weakly consistent는 Compare and Swap를 이용한 매커니즘이라는 것이다.
+
+weakly consistent iterator 매커니즘을 사용하는 대표적인 클래스인 ConcurrentHashMap의 동기화 처리 방식에서 Compare and Swap이 사용되는 것을 자세히 보고 싶다면 [이 글](https://pplenty.tistory.com/17)을 참고하자. 본문에서는 HashMap과 `remove()` 메서드와 달리 ConcurrentHashMap의 `remove()` 메서드에선 왜 ConcurrentModificationException이 발생하지 않는 것인지 내부 구현을 확인해본다.
 
 ### ConcurrentHashMap 클래스 내부 구현
 
@@ -330,22 +332,26 @@ final V replaceNode(Object key, V value, Object cv) {
 }
 ```
 
-즉, weakly consistent iterator는 요소가 추가/삭제 되더라도 ConcurrentModificationException을 던지지 않고 모든 요소를 순회할 수 있으며 동시성 이슈로부터도 안전하다<small>(그래서 fail-safe하다는 용어를 사용하려는 것일까?)</small>.
+즉, weakly consistent iterator는 요소가 추가/삭제 되더라도 ConcurrentModificationException을 던지지 않고 모든 요소를 순회할 수 있으며 동시성 이슈로부터도 안전하다.
 
-위와 같이 syncronized로 해결하는 케이스도 있지만, CopyOnWriteArrayList처럼 원본 collection을 카피한 후 카피한 collection으로부터 iterator를 생성하여 사용하는 weakly consistent iterator도 있다. <small>(원본 collection과 생성된 iterator는 무관하기 때문에 ConcurrentModificationException을 던지지 않는다)</small>
+#### weakly consistent가 내포하고 있는 의미
+
+- [weakly consistent 용어의 해설](https://stackoverflow.com/questions/28915215)
 
 ## 정리
 
-fail-fast iterator는 iterator가 생성된 후 구조가 변경되면 바로 ConcurrentModificationException을 던지고 작업을 중단한다.
+fail-fast iterator 매커니즘은 iterator가 생성된 후 구조가 변경되면 바로 ConcurrentModificationException을 던지고 작업을 중단한다.
 - 예시 : HashMap, LinkedHashMap, ArrayList, Vector
 
-weakly consistent iterator는 iterator가 생성된 후 구조가 변경되어도 ConcurrentModificationException을 던지지 않고 끝까지 작업을 진행한다.
-- 예시 : ConcurrentHashMap, CopyOnWriteArrayList
+weakly consistent iterator 매커니즘은 iterator가 생성된 후 구조가 변경되어도 ConcurrentModificationException을 던지지 않고 끝까지 작업을 진행한다.
+- 예시 : ConcurrentHashMap
+- 주의 : CopyOnWriteArrayList는 weakly consistent가 아닌 fail safe이다.
 
 ## References
 
 - https://perfectacle.github.io/2021/08/14/fail-fast-iterator/
 - https://stackoverflow.com/a/20142664/12364882
+- https://pplenty.tistory.com/17
 - JAVA HUNGRY : [Fail Fast Vs Fail Safe Iterator In Java](https://javahungry.blogspot.com/2014/04/fail-fast-iterator-vs-fail-safe-iterator-difference-with-example-in-java.html)
   - 해당 링크와 몇몇 자료들에선 fail-safe iterator가 카피를 만들어서 동작한다고 설명하며 fail-safe iterator의 대표적 클래스로 ConcurrentHashMap을 예시로 드는데, ConcurrentHashMap의 iterator는 위에서 함께 내부 코드를 확인했듯 카피를 기반으로 동작하지 않으므로 잘못된 설명이다.
   - fail-safe iterator 용어의 문제점을 설명하는 [stackoverflow의 답변](https://stackoverflow.com/a/38341921/12364882)에서 이에 대해 잘 설명해주고 있다.
