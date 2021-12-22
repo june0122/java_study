@@ -239,7 +239,31 @@ weakly consistent와 fail-safe 용어의 오용에 대한 글은 stackoverflow�
 
 - https://stackoverflow.com/a/38341921/12364882
 - https://stackoverflow.com/a/17377698/12364882
-- https://stackoverflow.com/a/20142664/12364882
+
+### weakly consistent iterator ≠ fail safe iterator
+
+구글에 weakly consistent iterator와 fail safe iterator에 대해 검색해보면 둘을 동일한 개념으로 설명하고 있는 글들이 많이 존재한다. 자바 문서에서 fail-safe라는 용어를 사용하지는 않지만 둘은 엄연히 다른 개념이므로 차이점을 정리하고자 한다.
+
+우선 weakly consistent와 fail safe는 **둘 다 `ConcurrentModificationException`을 던지지 않는다는 공통점**을 가지고 있다. 이로인해 둘이 같은 개념이라는 혼동을 불러일으키는 것 같다.
+
+- `weakly consistent iterator` : CAS<small>(compare-and-swap)</small>에 의존하는 컬렉션에는 weakly consistent iterator가 있으며, 이 iterator는 생성된 이후 [Backing Collection](https://stackoverflow.com/questions/10636528)에 적용된 변경 사항을 모두는 아니지만 일부를 반영한다. 예를 들어, iterator가 도달하기 전에 컬렉션의 요소가 수정되거나 제거된 경우 이러한 변경 사항은 확실히 반영하지만, 삽입에 대한 보장은 없다.
+
+- `fail safe iterator` 메커니즘은 컬렉션 내부 자료구조의 **복사본**을 만들고 이를 사용하여 요소들 위를 iterate한다. 이렇게 하면 기본 자료구조가 변경되는 경우 ConcurrentModificationException가 던져지는 것을 방지할 수 있다. 물론 전체 배열을 복사하는 오버헤드가 존재한다.
+  - CopyOnWriteArrayList가 fail safe iterator를 사용한 구현 중 하나이며 생성자 코드를 보면 쉽게 확인할 수 있다.
+
+    ```java
+    public CopyOnWriteArrayList(Collection<? extends E> c) {
+        Object[] elements;
+        if (c.getClass() == CopyOnWriteArrayList.class)
+            elements = ((CopyOnWriteArrayList<?>)c).getArray();
+        else {
+            elements = c.toArray();
+            if (elements.getClass() != Object[].class)
+                elements = Arrays.copyOf(elements, elements.length, Object[].class);
+        }
+        setArray(elements);
+    }
+    ```
 
 그럼 weakly consistent를 제공하는 iterator를 가진 대표적인 클래스인 ConcurrentHashMap을 살펴보도록 하자.
 
@@ -321,6 +345,7 @@ weakly consistent iterator는 iterator가 생성된 후 구조가 변경되어�
 ## References
 
 - https://perfectacle.github.io/2021/08/14/fail-fast-iterator/
+- https://stackoverflow.com/a/20142664/12364882
 - JAVA HUNGRY : [Fail Fast Vs Fail Safe Iterator In Java](https://javahungry.blogspot.com/2014/04/fail-fast-iterator-vs-fail-safe-iterator-difference-with-example-in-java.html)
   - 해당 링크와 몇몇 자료들에선 fail-safe iterator가 카피를 만들어서 동작한다고 설명하며 fail-safe iterator의 대표적 클래스로 ConcurrentHashMap을 예시로 드는데, ConcurrentHashMap의 iterator는 위에서 함께 내부 코드를 확인했듯 카피를 기반으로 동작하지 않으므로 잘못된 설명이다.
   - fail-safe iterator 용어의 문제점을 설명하는 [stackoverflow의 답변](https://stackoverflow.com/a/38341921/12364882)에서 이에 대해 잘 설명해주고 있다.
